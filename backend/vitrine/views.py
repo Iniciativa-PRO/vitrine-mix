@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from vitrine.models import UserAccount
 # Create your views here.
@@ -15,9 +15,6 @@ from vitrine.models import UserAccount
 #         return
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
-
 # Login request
 
 
@@ -29,22 +26,20 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponse("Login successful")
+            return JsonResponse({'message': 'User logged in'}, safe=False)
         else:
-            return HttpResponse("Login failed")
+            return JsonResponse({'error': 'User not found'}, safe=False)
     else:
-        return HttpResponse("Wrong method")
-
-    # return HttpResponse(f'USer:{username} password: {password}, user: {user}')
+        return JsonResponse({'error': 'Wrong method'}, safe=False)
 
 
 @csrf_exempt
 def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponse("Logout successful")
+        return JsonResponse({'message': 'User logged out'}, safe=False)
     else:
-        return HttpResponse("user was not logged in")
+        return JsonResponse({'error': 'User is not logged in'}, safe=False)
 
 
 @csrf_exempt
@@ -61,16 +56,16 @@ def register(request):
                 username=username, password=password, email=email, first_name=first_name, last_name=last_name, profile_picture=profile_picture)
             if user is not None:
                 login(request, user)
-                return HttpResponse("Register successful")
+                return JsonResponse({'user': user.username}, safe=False)
         except Exception as e:
-            return HttpResponse(f"Error: {e}")
+            return JsonResponse({'error': str(e)}, safe=False)
     else:
-        return HttpResponse("Wrong method")
+        return JsonResponse({'error': 'Wrong method'}, safe=False)
 
 
 @csrf_exempt
 def get_user(request):
     if request.user.is_authenticated:
-        return HttpResponse(request.user)
+        return JsonResponse({'username': request.user.username, 'email': request.user.email, 'first_name': request.user.first_name, 'last_name': request.user.last_name, 'profile_picture': request.user.profile_picture}, safe=False)
     else:
-        return HttpResponse("User is not logged in")
+        return JsonResponse({'error': 'User is not logged in'}, safe=False)
