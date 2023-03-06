@@ -33,6 +33,10 @@ class StoreFront(models.Model):
     facebook = models.TextField(max_length=30, blank=True)
     instagram = models.TextField(max_length=30, blank=True)
     youtube = models.TextField(max_length=30, blank=True)
+    owner = models.ForeignKey(
+        UserAccount,
+        on_delete=models.DO_NOTHING()
+    )
 
     def __str__(self):
         return  f'background: {self.background}, ' \
