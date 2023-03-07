@@ -19,9 +19,9 @@ class Services:
 
 
 class StoreFront(models.Model):
-    background = models.ImageField(upload_to=upload_path_handler, blank=True)
+    background = models.ImageField(blank=True)
     name = models.TextField(max_length=30, blank=False)
-    logo = models.ImageField(upload_to=upload_path_handler, blank=True)
+    logo = models.ImageField(blank=True)
     theme = models.TextField(max_length=10, blank=False)
     description = models.TextField(max_length=100, blank=False)
     is_schedulable = models.BooleanField(default=True)
@@ -35,7 +35,7 @@ class StoreFront(models.Model):
     youtube = models.TextField(max_length=30, blank=True)
     owner = models.ForeignKey(
         UserAccount,
-        on_delete=models.CASCADE()
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -58,11 +58,11 @@ class StoreFront(models.Model):
 
 class Services(models.Model):
     name = models.TextField(max_length=100, blank=False)
-    price = models.DecimalField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     duration_time = models.TimeField()
     store_id = models.ForeignKey(
         StoreFront,
-        on_delete=models.CASCADE(),
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):
