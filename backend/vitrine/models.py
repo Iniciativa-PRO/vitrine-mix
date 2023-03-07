@@ -35,7 +35,7 @@ class StoreFront(models.Model):
     youtube = models.TextField(max_length=30, blank=True)
     owner = models.ForeignKey(
         UserAccount,
-        on_delete=models.DO_NOTHING()
+        on_delete=models.CASCADE()
     )
 
     def __str__(self):
@@ -62,7 +62,7 @@ class Services(models.Model):
     duration_time = models.TimeField()
     store_id = models.ForeignKey(
         StoreFront,
-        on_delete=models.DO_NOTHING(),
+        on_delete=models.CASCADE(),
     )
 
     def __str__(self):

@@ -69,3 +69,5 @@ def get_user(request):
         return JsonResponse({'username': request.user.username, 'email': request.user.email, 'first_name': request.user.first_name, 'last_name': request.user.last_name, 'profile_picture': request.user.profile_picture}, safe=False)
     else:
         return JsonResponse({'error': 'User is not logged in'}, safe=False)
+
+
