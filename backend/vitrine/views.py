@@ -2,7 +2,14 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from vitrine.models import UserAccount
+from rest_framework import viewsets, generics
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+from .serializer import StoreFrontSerializer, ListaServicesPorStoreFrontSerializer
+from .models import UserAccount, StoreFront, Services
+
+
 # Create your views here.
 
 
@@ -53,7 +60,8 @@ def register(request):
         profile_picture = request.POST.get('profile_picture')
         try:
             user = UserAccount.objects.create_user(
-                username=username, password=password, email=email, first_name=first_name, last_name=last_name, profile_picture=profile_picture)
+                username=username, password=password, email=email, first_name=first_name, last_name=last_name,
+                profile_picture=profile_picture)
             if user is not None:
                 login(request, user)
                 return JsonResponse({'user': user.username}, safe=False)
@@ -66,8 +74,28 @@ def register(request):
 @csrf_exempt
 def get_user(request):
     if request.user.is_authenticated:
-        return JsonResponse({'username': request.user.username, 'email': request.user.email, 'first_name': request.user.first_name, 'last_name': request.user.last_name, 'profile_picture': request.user.profile_picture}, safe=False)
+        return JsonResponse(
+            {'username': request.user.username, 'email': request.user.email, 'first_name': request.user.first_name,
+             'last_name': request.user.last_name, 'profile_picture': request.user.profile_picture}, safe=False)
     else:
         return JsonResponse({'error': 'User is not logged in'}, safe=False)
 
 
+class StoreFrontViewSet(viewsets.ModelViewSet):
+    """Listando as StoreFronts cadastradas"""
+    queryset = StoreFront.objects.all()
+    serializer_class = StoreFrontSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+class ListaServicesPorStoreFront(generics.ListAPIView):
+    """"Listando todos os Services de um dado StoreFront"""
+
+    def get_queryset(self):
+        queryset = Services.objects.filter(store_id=self.kwargs['pk'])
+        return queryset
+
+    serializer_class = ListaServicesPorStoreFrontSerializer
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]

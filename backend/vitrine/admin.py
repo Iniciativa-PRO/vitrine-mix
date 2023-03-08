@@ -2,10 +2,21 @@ from django.contrib import admin
 
 # Register your models here.
 
-from vitrine.models import UserAccount
+from .models import UserAccount, StoreFront, Services
 
 
-# Define a new User admin
+class List_StoreFronts(admin.ModelAdmin):
+    list_display = ("id", "name", "owner")
+    search_fields = ("name", )
+    list_filter = ("owner", )
 
 
-admin.site.register(UserAccount)
+class List_Services(admin.ModelAdmin):
+    list_display = ("id", "name", "store")
+    search_fields = ("name", )
+    list_filter = ("store", )
+
+
+admin.site.register(UserAccount, )
+admin.site.register(StoreFront, List_StoreFronts)
+admin.site.register(Services, List_Services)
