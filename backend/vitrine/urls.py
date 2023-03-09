@@ -12,8 +12,10 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('register', views.register, name='register'),
     path('profile', views.get_user),
+    path('useraccounts', views.UserAccountViewSet.as_view({
+        'get': 'list',
+    })),
     path('', include(router.urls)),
     path('storefront/<int:pk>/services', ListaServicesPorStoreFront.as_view())
 
 ]
-

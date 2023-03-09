@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import StoreFront, Services
+from .models import StoreFront, Services, UserAccount
+
+
+class UserAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAccount
+        fields = ['id', 'username', 'email',
+                  'first_name', 'last_name', 'profile_picture']
 
 
 class ListaServicesPorStoreFrontSerializer(serializers.ModelSerializer):

@@ -6,7 +6,7 @@ from rest_framework import viewsets, generics
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .serializer import StoreFrontSerializer, ListaServicesPorStoreFrontSerializer
+from .serializer import StoreFrontSerializer, ListaServicesPorStoreFrontSerializer, UserAccountSerializer
 from .models import UserAccount, StoreFront, Services
 
 
@@ -27,6 +27,7 @@ from .models import UserAccount, StoreFront, Services
 
 @csrf_exempt
 def login_view(request):
+    """Loga o usuário"""
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -42,6 +43,7 @@ def login_view(request):
 
 @csrf_exempt
 def logout_view(request):
+    """Desloga o usuário"""
     if request.user.is_authenticated:
         logout(request)
         return JsonResponse({'message': 'User logged out'}, safe=False)
@@ -51,6 +53,7 @@ def logout_view(request):
 
 @csrf_exempt
 def register(request):
+    """Cadastra um novo usuário"""
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -73,12 +76,20 @@ def register(request):
 
 @csrf_exempt
 def get_user(request):
+    """Retorna os dados do usuário logado"""
     if request.user.is_authenticated:
         return JsonResponse(
             {'username': request.user.username, 'email': request.user.email, 'first_name': request.user.first_name,
              'last_name': request.user.last_name, 'profile_picture': request.user.profile_picture}, safe=False)
     else:
         return JsonResponse({'error': 'User is not logged in'}, safe=False)
+
+
+class UserAccountViewSet(viewsets.ModelViewSet):
+    """Listando os usuários cadastrados"""
+    queryset = UserAccount.objects.all()
+    serializer_class = UserAccountSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class StoreFrontViewSet(viewsets.ModelViewSet):
