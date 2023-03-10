@@ -6,9 +6,9 @@ from .models import UserAccount, StoreFront, Services
 
 
 class List_StoreFronts(admin.ModelAdmin):
-    list_display = ("id", "name", "owner")
+    list_display = ("id", "name", "creator")
     search_fields = ("name", )
-    list_filter = ("owner", )
+    list_filter = ("creator", )
 
 
 class List_Services(admin.ModelAdmin):

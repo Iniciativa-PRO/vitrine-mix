@@ -18,6 +18,27 @@ class ListaServicesPorStoreFrontSerializer(serializers.ModelSerializer):
 
 
 class StoreFrontSerializer(serializers.ModelSerializer):
+    creator = serializers.ReadOnlyField(source='creator.username')
+    creator_id = serializers.ReadOnlyField(source='creator.id')
+    background = serializers.ImageField(required=False)
+    logo = serializers.ImageField(required=False)
+
     class Meta:
         model = StoreFront
-        fields = '__all__'
+        fields = ['id', \
+                  'creator', \
+                  'creator_id', \
+                  'background', \
+                  'name', \
+                  'logo', \
+                  'theme', \
+                  'description',\
+                  'is_schedulable', \
+                  'address_text', \
+                  'address_CEP', \
+                  'phone', \
+                  'opening_time', \
+                  'closing_time', \
+                  'facebook', \
+                  'instagram', \
+                  'youtube']

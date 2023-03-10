@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, generics
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 
 from .serializer import StoreFrontSerializer, ListaServicesPorStoreFrontSerializer, UserAccountSerializer
@@ -96,8 +97,12 @@ class StoreFrontViewSet(viewsets.ModelViewSet):
     """Listando as StoreFronts cadastradas"""
     queryset = StoreFront.objects.all()
     serializer_class = StoreFrontSerializer
+    parser_classes = (MultiPartParser, FormParser)
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
 
 
 class ListaServicesPorStoreFront(generics.ListAPIView):
