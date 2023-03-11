@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets, generics
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 
@@ -61,7 +61,7 @@ def register(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        profile_picture = request.POST.get('profile_picture')
+        profile_picture = request.FILES['profile_picture']
         try:
             user = UserAccount.objects.create_user(
                 username=username, password=password, email=email, first_name=first_name, last_name=last_name,
@@ -90,6 +90,7 @@ class UserAccountViewSet(viewsets.ModelViewSet):
     """Listando os usuários cadastrados"""
     queryset = UserAccount.objects.all()
     serializer_class = UserAccountSerializer
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
 

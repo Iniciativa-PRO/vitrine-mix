@@ -5,19 +5,19 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+def upload_to(instance, filename):
+    return 'images/{filename}'.format(filename=filename)
+
 
 class UserAccount(AbstractUser):
     email = models.EmailField(unique=True)
-    profile_picture = models.URLField(null=True, blank=True)
+    profile_picture = models.ImageField(
+        upload_to='profile_pictures', blank=True, null=True)
 
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
     def __str__(self):
         return f'User: {self.username}, email: {self.email}, first_name: {self.first_name}, last_name: {self.last_name}, profile_picture: {self.profile_picture}'
-
-
-def upload_to(instance, filename):
-    return 'images/{filename}'.format(filename=filename)
 
 
 class StoreFront(models.Model):
