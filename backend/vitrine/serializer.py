@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import StoreFront, Services, UserAccount
+from .models import Booking, StoreFront, Services, UserAccount
 
 
 class UserAccountSerializer(serializers.ModelSerializer):
@@ -25,20 +25,48 @@ class StoreFrontSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StoreFront
-        fields = ['id', \
-                  'creator', \
-                  'creator_id', \
-                  'background', \
-                  'name', \
-                  'logo', \
-                  'theme', \
-                  'description',\
-                  'is_schedulable', \
-                  'address_text', \
-                  'address_CEP', \
-                  'phone', \
-                  'opening_time', \
-                  'closing_time', \
-                  'facebook', \
-                  'instagram', \
+        fields = ['id',
+                  'creator',
+                  'creator_id',
+                  'background',
+                  'name',
+                  'logo',
+                  'theme',
+                  'description',
+                  'is_schedulable',
+                  'address_text',
+                  'address_CEP',
+                  'phone',
+                  'opening_time',
+                  'closing_time',
+                  'facebook',
+                  'instagram',
                   'youtube']
+
+
+class ServiceSerializer(serializers.ModelSerializer):
+    store_id = serializers.ReadOnlyField(source='store.id')
+
+    class Meta:
+        model = Services
+        fields = '__all__'
+
+
+class BookingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+    def validate(self, data):
+        service = data['service']
+        duration = service.duration
+        start_time = data['start_time']
+        end_time = start_time + duration
+        store = service.store
+        bookings = Booking.objects.filter(service__store=store)
+        for booking in bookings:
+            if booking.start_time <= start_time <= booking.end_time or booking.start_time <= end_time <= booking.end_time:
+                raise serializers.ValidationError(
+                    "The service has no available time")
+        return data

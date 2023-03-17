@@ -73,3 +73,23 @@ class Services(models.Model):
                f'price: {self.price}, ' \
                f'duration_time: {self.duration_time}, ' \
                f'store: {self.store} '
+
+
+class Booking(models.Model):
+    objects = models.Manager()
+    service = models.ForeignKey(
+        Services,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        UserAccount,
+        on_delete=models.CASCADE,
+    )
+    start_time = models.DateTimeField(),
+    end_time = models.DateTimeField()
+
+    def __str__(self):
+        return f'service: {self.service}, ' \
+            f'user: {self.user}, ' \
+            f'start_time: {self.start_time}, ' \
+            f'end_time: {self.end_time} '
