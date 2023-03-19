@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
-from .serializer import StoreFrontSerializer, ListaServicesPorStoreFrontSerializer, UserAccountSerializer
-from .models import UserAccount, StoreFront, Services
+from .permissions import IsOwnerStoreFrontOrReadOnly, IsOwnerServiceOrReadOnly
+
+from .serializer import ServiceSerializer, StoreFrontSerializer, ListaServicesPorStoreFrontSerializer, UserAccountSerializer, BookingSerializer
+from .models import Booking, UserAccount, StoreFront, Services
 
 
 # Create your views here.
@@ -108,8 +112,8 @@ class StoreFrontViewSet(viewsets.ModelViewSet):
     queryset = StoreFront.objects.all()
     serializer_class = StoreFrontSerializer
     parser_classes = (MultiPartParser, FormParser)
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated, IsOwnerStoreFrontOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
@@ -123,5 +127,67 @@ class ListaServicesPorStoreFront(generics.ListAPIView):
         return queryset
 
     serializer_class = ListaServicesPorStoreFrontSerializer
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+class ServiceViewSet(viewsets.ModelViewSet):
+    model = Services
+    """Listando e criando os Services cadastrados"""
+    serializer_class = ServiceSerializer
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated, IsOwnerServiceOrReadOnly]
+
+    def get_queryset(self):
+        queryset = Services.objects.all()
+        queryset = Services.objects.filter(
+            store=self.kwargs['storefront_id'])
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(store_id=self.kwargs['storefront_id'])
+
+    def retrieve(self, request, pk=None, storefront_id=None):
+        queryset = Services.objects.filter(
+            store_id=self.kwargs['storefront_id'])
+        service = get_object_or_404(queryset, pk=pk)
+        serializer = ServiceSerializer(service)
+        return Response(serializer.data)
+
+    def update(self, request, pk=None, storefront_id=None):
+        queryset = Services.objects.filter(
+            store_id=self.kwargs['storefront_id'])
+        service = get_object_or_404(queryset, pk=pk)
+        serializer = ServiceSerializer(service, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk=None, storefront_id=None):
+        queryset = Services.objects.filter(
+            store_id=self.kwargs['storefront_id'])
+        service = get_object_or_404(queryset, pk=pk)
+        serializer = ServiceSerializer(
+            service, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BookingViewSet(generics.ListAPIView):
+    """Listando as Bookings cadastradas"""
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Booking.objects.filter(
+            user=self.request.user, store_id=self.kwargs['store'], service_id=self.kwargs['service'])
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user,
+                        service_id=self.kwargs['service'])

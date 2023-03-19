@@ -45,7 +45,7 @@ class StoreFrontSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    store_id = serializers.ReadOnlyField(source='store.id')
+    store = serializers.ReadOnlyField(source='store.id')
 
     class Meta:
         model = Services
