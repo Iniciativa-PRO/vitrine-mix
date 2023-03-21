@@ -8,26 +8,11 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.utils.dateparse import parse_datetime
 
 from .permissions import IsOwnerStoreFrontOrReadOnly, IsOwnerServiceOrReadOnly
-
 from .serializer import ServiceSerializer, StoreFrontSerializer, ListaServicesPorStoreFrontSerializer, UserAccountSerializer, BookingSerializer
 from .models import Booking, UserAccount, StoreFront, Services
-
-
-# Create your views here.
-
-
-# def login(request):
-#     username = request.POST['username']
-#     password = request.POST['password']
-#     user = authenticate(request, username=username, password=password)
-#     if user is not None:
-#         login(request, user)
-#         return
-
-
-# Login request
 
 
 @csrf_exempt
@@ -132,29 +117,31 @@ class ListaServicesPorStoreFront(generics.ListAPIView):
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    model = Services
     """Listando e criando os Services cadastrados"""
+    model = Services
     serializer_class = ServiceSerializer
     authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerServiceOrReadOnly]
 
     def get_queryset(self):
-        queryset = Services.objects.all()
         queryset = Services.objects.filter(
             store=self.kwargs['storefront_id'])
         return queryset
 
     def perform_create(self, serializer):
+        """Cria um novo service e associa ao StoreFront"""
         serializer.save(store_id=self.kwargs['storefront_id'])
 
     def retrieve(self, request, pk=None, storefront_id=None):
+        """Retorna um service específico"""
         queryset = Services.objects.filter(
-            store_id=self.kwargs['storefront_id'])
+            store_id=storefront_id)
         service = get_object_or_404(queryset, pk=pk)
         serializer = ServiceSerializer(service)
         return Response(serializer.data)
 
     def update(self, request, pk=None, storefront_id=None):
+        """Atualiza um service específico"""
         queryset = Services.objects.filter(
             store_id=self.kwargs['storefront_id'])
         service = get_object_or_404(queryset, pk=pk)
@@ -165,6 +152,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, pk=None, storefront_id=None):
+        """Realiza a atualização parcial de um service específico"""
         queryset = Services.objects.filter(
             store_id=self.kwargs['storefront_id'])
         service = get_object_or_404(queryset, pk=pk)
@@ -176,18 +164,13 @@ class ServiceViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BookingViewSet(generics.ListAPIView):
+class BookingViewSet(viewsets.ModelViewSet):
     """Listando as Bookings cadastradas"""
-    queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [BasicAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Booking.objects.filter(
-            user=self.request.user, store_id=self.kwargs['store'], service_id=self.kwargs['service'])
+            user=self.request.user, service=self.kwargs['service_id'])
         return queryset
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user,
-                        service_id=self.kwargs['service'])
