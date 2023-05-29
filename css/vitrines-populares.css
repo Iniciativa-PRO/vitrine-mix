@@ -1,0 +1,365 @@
+.exibicao-vitrines {
+    background-color: #005F72;
+    border-radius: 25px;
+    height: auto;
+    margin-top: 3%;
+    padding-bottom: 25%;
+}
+
+.exibicao__vitrines-populares {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.vitrines-populares__titulo {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 1.7em;
+    padding: 30px 20px 25px 20px;
+    width: 100%;
+}
+
+.vitrines-populares__titulo img {
+    margin-bottom: 0.6em;
+}
+
+.vitrines-populares__contener {
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.contener-scroll {
+    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+    width: 95%;
+}
+
+.barbershop {
+    align-items: center;
+    background-color: #1C2D2F;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.barbershop img {
+    margin-top: 1em;
+}
+
+.barbershop h1 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    height: auto;
+    margin-bottom: 1em;
+    text-align: center;
+    width: 180px;
+}
+
+.barbershop p {
+    font-size: 16px;
+    font-weight: 400;
+    height: auto;
+    line-height: 20.2px;
+    margin-bottom: 1em;
+    width: 80%;
+}
+
+.barbershop button {
+    background: transparent;
+    border-radius: 3px;
+    border: 1px solid #A7DDF2;
+    color: #A7DDF2;
+    font-size: 20px;
+    font-weight: 400;
+    height: 52px;
+    line-height: 25.25%;
+    margin-bottom: 2em;
+    width: 88%;
+}
+
+.barbershop--vermelho {
+    align-items: center;
+    background-color: #BD2A2E;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    justify-content: space-evenly;
+    width: 360px;
+}
+
+.barbershop--vermelho img {
+    margin-top: 1em;
+}
+
+.barbershop--vermelho h1 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    height: auto;
+    margin-bottom: 1em;
+    text-align: center;
+    width: 180px;
+}
+
+.barbershop--vermelho p {
+    font-size: 16px;
+    font-weight: 400;
+    height: auto;
+    line-height: 20.2px;
+    margin-bottom: 1em;
+    width: 80%;
+}
+
+.barbershop--vermelho button {
+    background: transparent;
+    border-radius: 3px;
+    border: 1px solid #A7DDF2;
+    color: #A7DDF2;
+    font-size: 20px;
+    font-weight: 400;
+    height: 52px;
+    line-height: 25.25%;
+    margin-bottom: 2em;
+    width: 88%;
+}
+
+.barbershop--vermelho-escuro {
+    align-items: center;
+    background-color: #390D02;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    justify-content: space-evenly;
+    width: 360px;
+}
+
+.barbershop--vermelho-escuro img {
+    margin-top: 1em;
+}
+
+.barbershop--vermelho-escuro h1 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    height: auto;
+    margin-bottom: 1em;
+    text-align: center;
+    width: 180px;
+}
+
+.barbershop--vermelho-escuro p {
+    font-size: 16px;
+    font-weight: 400;
+    height: auto;
+    line-height: 20.2px;
+    margin-bottom: 1em;
+    width: 80%;
+}
+
+.barbershop--vermelho-escuro button {
+    background: transparent;
+    border-radius: 3px;
+    border: 1px solid #A7DDF2;
+    color: #A7DDF2;
+    font-size: 20px;
+    font-weight: 400;
+    height: 52px;
+    line-height: 25.25%;
+    margin-bottom: 2em;
+    width: 88%;
+}
+
+@media screen and (max-width: 480px) {
+    .contener-scroll::-webkit-scrollbar {
+        visibility: hidden;
+    }
+
+    .vitrines-populares__titulo img {
+        height: 5px;
+        width: 76%;
+    }
+
+    .vitrines-populares__titulo h1 {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 30.3px;
+    }
+
+    .contener-scroll {
+        margin-left: 1em;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+    }
+
+    .barbershop--scroll-snap {
+        flex: none;
+        margin-right: 1.2em;
+        scroll-snap-align: start;
+        width: 90%;
+    }
+
+    .barbershop {
+        height: 500px;
+        margin-left: 190%;
+    }
+
+    .barbershop img {
+        margin-top: 1em;
+    }
+
+    .barbershop h1 {
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 25.25px;
+        margin-bottom: 1em;
+        text-align: center;
+        width: 125px;
+    }
+
+    .barbershop p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 17.68px;
+        width: 88%;
+    }
+
+    .barbershop button {
+        font-size: 15px;
+        height: 35px;
+        margin-bottom: 2.6em;
+        width: 88%;
+    }
+
+    .barbershop--vermelho {
+        height: 500px;
+    }
+
+    .barbershop--vermelho img {
+        margin-top: 1em;
+    }
+
+    .barbershop--vermelho h1 {
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 25.25px;
+        margin-bottom: 1em;
+        text-align: center;
+        width: 125px;
+    }
+
+    .barbershop--vermelho p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 17.68px;
+        width: 88%;
+    }
+
+    .barbershop--vermelho button {
+        font-size: 15px;
+        height: 35px;
+        margin-bottom: 2.6em;
+        width: 88%;
+    }
+
+    .barbershop--vermelho-escuro {
+        height: 500px;
+    }
+
+    .barbershop--vermelho-escuro img {
+        margin-top: 1em;
+    }
+
+    .barbershop--vermelho-escuro h1 {
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 25.25px;
+        margin-bottom: 1em;
+        text-align: center;
+        width: 125px;
+    }
+
+    .barbershop--vermelho-escuro p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 17.68px;
+        width: 88%;
+    }
+
+    .barbershop--vermelho-escuro button {
+        font-size: 15px;
+        height: 35px;
+        margin-bottom: 2.6em;
+        width: 88%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .contener-scroll::-webkit-scrollbar {
+        visibility: hidden;
+    }
+
+    .vitrines-populares__titulo img {
+        height: 10px;
+    }
+
+    .vitrines-populares__titulo h1 {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 30.3px;
+    }
+
+    .contener-scroll {
+        margin-left: 1em;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        width: 95%;
+    }
+
+    .barbershop--scroll-snap {
+        flex: none;
+        margin-right: 1.2em;
+        scroll-snap-align: start;
+        width: 90%;
+    }
+
+    .barbershop {
+        height: 500px;
+        margin-left: 190%;
+    }
+
+    .barbershop--vermelho {
+        height: 500px;
+    }
+
+    .barbershop--vermelho-escuro {
+        height: 500px;
+    }
+}
+
+@media screen and (min-width: 901px) {
+    .barbershop {
+        height: 550px;
+        width: 360px;
+    }
+
+    .barbershop--vermelho {
+        height: 550px;
+        width: 360px;
+    }
+
+    .barbershop--vermelho-escuro {
+        height: 550px;
+        width: 360px;
+    }
+}
