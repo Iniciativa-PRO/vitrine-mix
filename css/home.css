@@ -1,12 +1,13 @@
 main{
-    height: auto;
-}
+    height: 100vh;
+} 
 .main{
 
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-color: #2A3040;
     color: white;
+    overflow: auto;
 }
 
 .header{
@@ -17,8 +18,17 @@ main{
     align-items: center;
     justify-content: space-between;
 }
-.btn-registrar{
 
+.header a{
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+.header a:visited{
+    color: white;
+}
+
+a .btn-registrar{
     width: 90px;
     height: 20px;
     font-family: 'Noto Sans';
@@ -101,7 +111,7 @@ main{
 }
 .titulo h1 span:last-child{
 
-    margin-left: 60px;
+    margin-left: 91px;
 }
 
 .conteudo{
@@ -117,11 +127,12 @@ main{
 
 .busca {
     position: relative;
+    max-width: 270px;
 }
 #busca {
 
     margin-top: 100px;
-    width: 265px;
+    width: 100%;
     height: 45px;
     background-color: #EFEFEF;
     border-radius: 50px;
