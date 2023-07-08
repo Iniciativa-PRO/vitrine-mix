@@ -1,0 +1,56 @@
+.formulario, .formulario form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formulario{
+    margin: 0 1.5em;
+}
+
+.formulario h3{
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 30.3px;
+    margin-bottom: 40px;
+}
+
+.formulario form{
+    gap: 1em;
+    margin-bottom: 5px;
+}
+
+.formulario input{
+    min-width: 260px;
+    height: 50px;
+    border-radius: 3px;
+    border: solid 1px #d9d9d9;
+    background-color: transparent;
+}
+
+.formulario input::placeholder{
+    padding-left: 15px;
+    font-size: 15px;
+}
+
+.formulario form .btn_form{
+    color: #d9d9d9;
+    background-color: #0fa37f;
+    line-height: 18.94px;
+    cursor: pointer;
+}
+
+.formulario p{
+    font-size: 14px;
+    font-weight: 17.68px;
+    color: #d9d9d9;
+}
+
+.formulario p a{
+    text-decoration: none;
+    color: #0fa37f;
+}
+
+.formulario p a:visited{
+    color: #0fa37f;
+}
