@@ -29,8 +29,7 @@ main{
 }
 
 a .btn-registrar{
-    width: 90px;
-    height: 20px;
+    padding: 5px;
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 400;
@@ -215,6 +214,50 @@ a .btn-registrar{
     .menu__contener__lista__item {
         padding-top: 8px;
         width: auto;
+    }
+
+    .main{
+        position: relative;
+    }
+    .header{
+        margin-top: 20px;
+    }
+    a .btn-registrar{
+        font-size: 24px;
+    }
+    .titulo{
+        width: auto;
+        position: absolute;
+        left: 45%;
+        top: 0;
+    }
+    .conteudo{
+        margin-top: 100px;
+        margin-left: 90px;
+        position: relative;
+    }
+    .conteudo ul{
+        height: auto;
+    }
+    .conteudo ul li {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+    .busca{
+        margin: 0 auto;
+        max-width: 700px;
+        
+    }
+    #busca{
+        height: 75px;
+    }
+    #busca::placeholder {
+        font-size: 24px;
+    }
+    .btn-busca{
+        width: 42px;
+        height: 42px;
+        bottom: 18px;
     }
 }
 
